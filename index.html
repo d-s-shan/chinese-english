@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>中国出張対策アプリ - 中国語と英語</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+SC:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{--bg:#fff;--surface:#fff;--ink:#000;--sub:#4a4a4a;--line:#e4e4e4;--pri:#c8102e;--pri-ink:#fff;--soft:#fdeceb;--red:#c8102e;--ok:#c8102e;--ng:#7a6567;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:none){:root:not([data-theme="light"]){--bg:#1c1012;--surface:#271618;--ink:#fbeceb;--sub:#d0a9a6;--line:#4a2a2d;--pri:#ff7b7f;--pri-ink:#2a0709;--soft:#3b1d20;--red:#ff7b7f;--ok:#e5484d;--ng:#a58a8c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1c1012;--surface:#271618;--ink:#fbeceb;--sub:#d0a9a6;--line:#4a2a2d;--pri:#ff7b7f;--pri-ink:#2a0709;--soft:#3b1d20;--red:#ff7b7f;--ok:#e5484d;--ng:#a58a8c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP",system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;line-height:1.6;padding-bottom:84px}
+svg.lucide{width:1.25em;height:1.25em;flex:none}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header{padding:20px 0 12px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-size:1.25rem;margin:0;display:flex;align-items:center;gap:8px}
+.count{display:flex;align-items:center;gap:8px;background:var(--soft);border-radius:999px;padding:6px 14px;font-size:.875rem;font-weight:500}
+.prog{margin-top:12px;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--pri);width:0;transition:width .3s}
+.proglabel{font-size:.8125rem;color:var(--sub);margin-top:6px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:center;gap:4px}
+nav button{flex:1;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;padding:8px 4px;border-radius:12px;font-size:.75rem;color:var(--sub);min-height:56px}
+nav button[aria-selected="true"]{background:var(--soft);color:var(--ink);font-weight:700}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:thin}
+.chip{display:flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 16px;font-size:.9375rem;min-height:44px}
+.chip[aria-pressed="true"]{background:var(--pri);color:var(--pri-ink);border-color:var(--pri);font-weight:700}
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.main{font-size:1.375rem;font-weight:600;line-height:1.35}
+.main.zh{font-family:"Noto Serif SC","Noto Serif CJK SC","Songti SC",serif}
+.main.en{font-size:1.0625rem;font-family:inherit;font-weight:500}
+.py{color:var(--sub);font-size:.9375rem;margin-top:2px}
+.ja{color:var(--sub);font-size:.9375rem;margin-top:4px}
+.acts{display:flex;gap:8px;flex:none}
+.ib{width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--bg);display:grid;place-items:center}
+.ib.on{background:var(--ok);color:#fff;border-color:var(--ok)}
+.ib[data-sp]{background:var(--soft);color:var(--pri);border-color:transparent}
+.mn{display:flex;flex-direction:column;gap:8px}
+.mn .ic{width:44px;height:44px;border-radius:12px;background:var(--soft);color:var(--pri);display:grid;place-items:center}
+.mn h3{margin:4px 0 0;font-size:1.0625rem}
+.mn p{margin:0;color:var(--sub);font-size:.9375rem}
+.mn .tip{background:var(--soft);border-radius:10px;padding:8px 12px;font-size:.875rem;color:var(--ink)}
+.note{display:flex;gap:10px;margin-top:12px;background:var(--soft);border-radius:14px;padding:14px 16px;font-size:.9375rem}
+.q h2{font-size:1rem;margin:0 0 4px;color:var(--sub);font-weight:500}
+.q .qt{font-size:1.375rem;font-weight:700;margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:14px 16px;min-height:56px}
+.opt small{display:block;color:var(--sub);font-size:.875rem}
+.opt.right{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.right small{color:#fff}
+.opt.wrong{border-color:var(--ng);color:var(--ng)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--pri);color:var(--pri-ink);border:0;border-radius:12px;padding:12px 20px;font-weight:700;min-height:48px;margin-top:14px}
+.score{font-size:2.25rem;font-weight:700}
+.stat{display:flex;justify-content:space-between;font-size:.875rem;color:var(--sub);margin-bottom:12px}
+h1 svg,.count svg,.note svg,.chip svg,nav button svg{color:var(--pri)}
+.chip[aria-pressed="true"] svg{color:var(--pri-ink)}
+.inp{width:100%;font:inherit;font-size:1.0625rem;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);min-height:48px}
+.inp:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+#res{display:grid;gap:12px}
+.pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.main.long{font-size:1.125rem}
+textarea.inp{resize:vertical;line-height:1.6}
+.btn:disabled{opacity:.6}
+@media (min-width:720px){
+ .grid{grid-template-columns:1fr 1fr}
+ body{padding-bottom:24px}
+ nav{position:static;border:0;background:none;padding:0;justify-content:flex-start;margin:4px 0 12px}
+ nav button{flex-direction:row;gap:8px;max-width:none;flex:none;padding:10px 18px;font-size:.9375rem;border:1px solid var(--line);background:var(--surface);min-height:48px}
+ nav button[aria-selected="true"]{background:var(--pri);color:var(--pri-ink);border-color:var(--pri)}
+ nav button[aria-selected="true"] svg{color:var(--pri-ink)}
+ .wrap{padding:0 24px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header>
+  <div class="top">
+   <h1><i data-lucide="compass"></i>中国出張対策アプリ</h1>
+   <div class="count"><i data-lucide="plane-takeoff"></i><span id="cd"></span></div>
+  </div>
+  <div class="prog"><i id="pb"></i></div>
+  <div class="proglabel" id="pl"></div>
+ </header>
+ <nav id="nav" role="tablist" aria-label="メニュー"></nav>
+ <main id="app"></main>
+</div>
+<script>
+const ZH={"あいさつ":[["你好","nǐ hǎo","こんにちは"],["谢谢","xièxie","ありがとう"],["不客气","bú kèqi","どういたしまして"],["对不起","duìbuqǐ","ごめんなさい"],["请多关照","qǐng duō guānzhào","よろしくお願いします"],["我是日本人","wǒ shì Rìběnrén","私は日本人です"],["再见","zàijiàn","さようなら"]],
+"食事":[["请给我菜单","qǐng gěi wǒ càidān","メニューをください"],["我要这个","wǒ yào zhège","これをください"],["不要辣","bú yào là","辛くしないでください"],["有英文菜单吗？","yǒu Yīngwén càidān ma","英語のメニューはありますか"],["请给我一杯水","qǐng gěi wǒ yì bēi shuǐ","水を1杯ください"],["很好吃","hěn hǎochī","とてもおいしい"],["买单","mǎidān","お会計をお願いします"]],
+"移動":[["厕所在哪里？","cèsuǒ zài nǎlǐ","トイレはどこですか"],["我要去这个地方","wǒ yào qù zhège dìfang","ここに行きたいです（住所を見せる）"],["请到这里","qǐng dào zhèlǐ","ここまでお願いします（タクシー）"],["地铁站在哪里？","dìtiězhàn zài nǎlǐ","地下鉄の駅はどこですか"],["请停车","qǐng tíngchē","止めてください"],["要多长时间？","yào duō cháng shíjiān","どのくらい時間がかかりますか"]],
+"買い物":[["多少钱？","duōshao qián","いくらですか"],["太贵了","tài guì le","高すぎます"],["能便宜一点吗？","néng piányi yìdiǎn ma","少し安くなりますか"],["可以刷卡吗？","kěyǐ shuā kǎ ma","カードは使えますか"],["可以用支付宝吗？","kěyǐ yòng Zhīfùbǎo ma","Alipayは使えますか"],["我只是看看","wǒ zhǐshì kànkan","見ているだけです"],["我要发票","wǒ yào fāpiào","領収書をください"]],
+"困った時":[["我不会说中文","wǒ bú huì shuō Zhōngwén","中国語は話せません"],["请说慢一点","qǐng shuō màn yìdiǎn","もう少しゆっくり話してください"],["我不明白","wǒ bù míngbai","わかりません"],["请帮帮我","qǐng bāngbang wǒ","助けてください"],["我迷路了","wǒ mílù le","道に迷いました"],["我丢了护照","wǒ diū le hùzhào","パスポートをなくしました"],["我不舒服","wǒ bù shūfu","体調が悪いです"],["请叫救护车","qǐng jiào jiùhùchē","救急車を呼んでください"]]};
+const EN={"空港":[["Where is the check-in counter for this flight?","この便のチェックイン カウンターはどこですか"],["I’d like a window seat, please.","窓側の席をお願いします"],["I’d like an aisle seat, please.","通路側の席をお願いします"],["Do I need to take out my laptop?","ノートPCは出す必要がありますか"],["The purpose of my visit is business.","訪問目的は仕事です"],["I’ll stay for five days.","5日間滞在します"],["Where is gate 32?","32番ゲートはどこですか"],["My baggage hasn’t arrived.","荷物が出てきません"],["Where can I get a taxi?","タクシー乗り場はどこですか"],["How do I get to the city center?","市内へはどう行けばいいですか"]],
+"ホテル":[["I have a reservation under Tanaka.","田中で予約しています"],["Could I check in early?","早めにチェックインできますか"],["What time is check-out?","チェックアウトは何時ですか"],["Could I have a late check-out?","レイトチェックアウトできますか"],["Is breakfast included?","朝食は含まれていますか"],["What is the Wi-Fi password?","Wi-Fiのパスワードを教えてください"],["The air conditioner isn’t working.","エアコンが動きません"],["Could I have some extra towels?","タオルを追加でもらえますか"],["Could you keep my luggage until this afternoon?","午後まで荷物を預かってもらえますか"],["Could you call a taxi for me?","タクシーを呼んでもらえますか"]]};
+const CI={"あいさつ":"hand","食事":"utensils","移動":"train-front","買い物":"shopping-bag","困った時":"life-buoy","空港":"plane","ホテル":"bed-double"};
+const MN=[["handshake","名刺は両手で渡す","名刺は両手で渡し、受け取ったらすぐしまわず、机の上に置いて話すと丁寧です。","中国語面の名刺があると信頼されやすいです。"],
+["wine","乾杯は「干杯」","宴席では主賓や上位の人から順に乾杯します。グラスは相手より少し低く当てると敬意を示せます。","飲めないときは「我不能喝酒」と先に伝えましょう。"],
+["utensils","食事は多めに注文","料理を少し残すのは「十分ごちそうになった」という意味です。ホストが注文を取り仕切る場面も多いです。","箸を立てて刺す置き方は避けます。"],
+["gift","贈り物の選び方","時計、傘、梨、緑の帽子は縁起が悪いとされます。お菓子や日本の特産品が無難です。","渡すときは両手で。"],
+["hash","数字の縁起","8は「発」に通じて好まれ、4は「死」に近い発音で避けられます。部屋番号や贈り物の数に影響します。","4個セットは避けると安心です。"],
+["smartphone","決済はスマホが中心","Alipay・WeChat Payが主流で、現金やカードを断られることもあります。出発前に外国人向けカード登録をしておきましょう。","少額の現金も持っておくと安心です。"],
+["wifi","ネット環境を事前準備","GoogleやLINEなど、日本で使い慣れたサービスが使えないことがあります。eSIMやVPNなど接続手段を日本で準備しておきます。","地図や翻訳はオフラインでも使えるようにしておきます。"],
+["clock","時間と身分証","ビジネスの約束は時間厳守が基本です。ホテルや鉄道ではパスポートの提示を求められるので常に携帯しましょう。","パスポートの写真データも保管しておきます。"]];
+const $=s=>document.querySelector(s);
+let store={};try{store=JSON.parse(localStorage.getItem("tripLearn")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("tripLearn",JSON.stringify(store))}catch(e){}};
+const TABS=[["zh","languages","中国語"],["en","plane","英語"],["mn","heart-handshake","マナー"],["tr","arrow-left-right","翻訳"],["qz","brain","クイズ"]];
+let tab="zh",cat={zh:"あいさつ",en:"空港"},L={},quiz=null;
+const items=[];
+Object.entries(ZH).forEach(([c,a])=>a.forEach((p,i)=>{const id="z"+c+i;L[id]=[p[0].replace("？","?"),"zh-CN"];items.push({id,k:"zh",zh:p[0],py:p[1],ja:p[2]})}));
+Object.entries(EN).forEach(([c,a])=>a.forEach((p,i)=>{const id="e"+c+i;L[id]=[p[0],"en-US"];items.push({id,k:"en",en:p[0],ja:p[1]})}));
+function speak(id){if(!window.speechSynthesis)return;const[t,l]=L[id];speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=l;u.rate=.85;speechSynthesis.speak(u)}
+function card(it){const on=store[it.id];const main=it.k==="zh"?`<div class="main zh">${it.zh}</div><div class="py">${it.py}</div>`:`<div class="main en">${it.en}</div>`;
+return `<article class="card ph"><div>${main}<div class="ja">${it.ja}</div></div><div class="acts"><button class="ib" data-sp="${it.id}" aria-label="音声を再生"><i data-lucide="volume-2"></i></button><button class="ib ${on?"on":""}" data-lr="${it.id}" aria-pressed="${!!on}" aria-label="覚えた"><i data-lucide="check"></i></button></div></article>`}
+function chips(data,t){return `<div class="chips" role="group">${Object.keys(data).map(c=>`<button class="chip" data-cat="${c}" aria-pressed="${cat[t]===c}"><i data-lucide="${CI[c]}"></i>${c}</button>`).join("")}</div>`}
+function viewLang(t){const data=t==="zh"?ZH:EN;const list=items.filter(i=>i.id.startsWith((t==="zh"?"z":"e")+cat[t]));
+const done=list.filter(i=>store[i.id]).length;
+return chips(data,t)+`<div class="stat"><span>${cat[t]}のフレーズ</span><span>覚えた ${done} / ${list.length}</span></div><div class="grid">${list.map(card).join("")}</div>`}
+const WP=[["トイレ","厕所","cèsuǒ","the restroom"],["駅","火车站","huǒchēzhàn","the station"],["空港","机场","jīchǎng","the airport"],["ホテル","酒店","jiǔdiàn","the hotel"],["地下鉄の駅","地铁站","dìtiězhàn","the subway station"],["両替所","换钱处","huànqiánchù","the currency exchange"],["病院","医院","yīyuàn","the hospital"],["レストラン","餐厅","cāntīng","the restaurant"],["会議室","会议室","huìyìshì","the meeting room"],["エレベーター","电梯","diàntī","the elevator"],["出口","出口","chūkǒu","the exit"],["タクシー乗り場","出租车站","chūzūchēzhàn","the taxi stand"]];
+const WT=[["水","水","shuǐ","water"],["お茶","茶","chá","tea"],["コーヒー","咖啡","kāfēi","coffee"],["ビール","啤酒","píjiǔ","beer"],["領収書","发票","fāpiào","a receipt"],["タオル","毛巾","máojīn","a towel"],["地図","地图","dìtú","a map"],["メニュー","菜单","càidān","the menu"],["鍵","钥匙","yàoshi","the key"],["充電器","充电器","chōngdiànqì","a charger"],["毛布","毯子","tǎnzi","a blanket"],["袋","袋子","dàizi","a bag"]];
+const PT=[["#はどこですか","#在哪里？","# zài nǎlǐ","Where is #?"],["#に行きたいです","我想去#","wǒ xiǎng qù #","I’d like to go to #."],["#までお願いします","请到#","qǐng dào #","Please take me to #."]];
+const TT=[["#をください","请给我#","qǐng gěi wǒ #","Could I have #, please?"],["#はありますか","有#吗？","yǒu # ma","Do you have #?"],["#が必要です","我需要#","wǒ xūyào #","I need #."]];
+const POOL=[["ありがとうございます","谢谢","xièxie","Thank you very much."],["すみません","请问","qǐngwèn","Excuse me."],["ごめんなさい","对不起","duìbuqǐ","I’m sorry."],["わかりません","我不明白","wǒ bù míngbai","I don’t understand."],["英語を話せますか","你会说英语吗？","nǐ huì shuō Yīngyǔ ma","Do you speak English?"],["もう一度お願いします","请再说一遍","qǐng zài shuō yí biàn","Could you say that again?"],["ゆっくり話してください","请说慢一点","qǐng shuō màn yìdiǎn","Could you speak more slowly?"],["いくらですか","多少钱？","duōshao qián","How much is it?"],["お会計をお願いします","买单","mǎidān","Check, please."],["予約があります","我有预订","wǒ yǒu yùdìng","I have a reservation."],["チェックインをお願いします","我要办理入住","wǒ yào bànlǐ rùzhù","I’d like to check in."],["チェックアウトをお願いします","我要退房","wǒ yào tuìfáng","I’d like to check out."],["荷物を預かってください","请帮我保管行李","qǐng bāng wǒ bǎoguǎn xíngli","Could you keep my luggage?"],["Wi-Fiのパスワードは何ですか","Wi-Fi密码是什么？","Wi-Fi mìmǎ shì shénme","What is the Wi-Fi password?"],["助けてください","请帮帮我","qǐng bāngbang wǒ","Please help me."],["パスポートをなくしました","我丢了护照","wǒ diū le hùzhào","I lost my passport."],["これは何ですか","这是什么？","zhè shì shénme","What is this?"],["カードは使えますか","可以刷卡吗？","kěyǐ shuā kǎ ma","Can I pay by card?"],["出張で来ました","我是来出差的","wǒ shì lái chūchāi de","I’m here on a business trip."],["名刺をどうぞ","这是我的名片","zhè shì wǒ de míngpiàn","Here is my business card."],["お会いできて嬉しいです","很高兴认识您","hěn gāoxìng rènshi nín","Nice to meet you."]];
+PT.forEach(t=>WP.forEach(w=>POOL.push(t.map((s,i)=>s.replace("#",w[i])))));
+TT.forEach(t=>WT.forEach(w=>POOL.push(t.map((s,i)=>s.replace("#",w[i])))));
+PT.forEach(t=>WT.length&&0);
+const EX=["トイレはどこですか","コーヒーをください","空港までお願いします","チェックインをお願いします","いくらですか"];
+let trT="zh",trQ="";
+function bg(s){s=s.replace(/[\s、。？?！!，,]/g,"");const a=new Set();for(let i=0;i<s.length-1;i++)a.add(s.slice(i,i+2));if(s.length===1)a.add(s);return a}
+function find(q){const Q=bg(q);if(!Q.size)return[];return POOL.map(p=>{let n=0;Q.forEach(g=>{if(p[0].includes(g))n++});return[n/Q.size+(p[0]===q?1:0),p]}).filter(x=>x[0]>=.3).sort((a,b)=>b[0]-a[0]).slice(0,6).map(x=>x[1])}
+function tcard(p,id,ja){const zh=trT==="zh";L[id]=zh?[p[1].replace("？","?"),"zh-CN"]:[p[3],"en-US"];return `<article class="card ph"><div>${zh?`<div class="main zh">${p[1]}</div><div class="py">${p[2]}</div>`:`<div class="main en">${p[3]}</div>`}<div class="ja">${ja}</div></div><div class="acts"><button class="ib" data-sp="${id}" aria-label="音声を再生"><i data-lucide="volume-2"></i></button></div></article>`}
+function showRes(){const el=$("#res");if(!el)return;const q=trQ.trim();
+if(!q)el.innerHTML=`<div class="note"><i data-lucide="lightbulb"></i><div>日本語を入力するか、上の例を押してください。端末内のフレーズ集から近い文を探すので、通信なしで使えます。</div></div>`;
+else{const hits=find(q),ws=[...WP,...WT].filter(w=>q.includes(w[0]));
+el.innerHTML=(hits.length?`<div class="grid">${hits.map((p,i)=>tcard(p,"r"+i,p[0])).join("")}</div>`:`<div class="note"><i data-lucide="info"></i><div>近いフレーズが見つかりません。「コーヒー」「トイレ」のように単語を短く入力してみてください。</div></div>`)+(ws.length?`<div class="stat" style="margin:8px 0 0"><span>入力に含まれる単語</span></div><div class="grid">${ws.map((w,i)=>tcard(w,"w"+i,w[0])).join("")}</div>`:"")}
+if(window.lucide)lucide.createIcons()}
+let trM="off",trL="",lgS=null;
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+let trE="mm",gKey="";try{gKey=localStorage.getItem("tripGKey")||"";trE=localStorage.getItem("tripEng")||"mm"}catch(e){}
+function chunks(t,n){const out=[];let cur="";t.split(/(?<=[。！？!?\n])/).forEach(s=>{while(s.length>n){if(cur){out.push(cur);cur=""}out.push(s.slice(0,n));s=s.slice(n)}if((cur+s).length>n){out.push(cur);cur=s}else cur+=s});if(cur)out.push(cur);return out.filter(x=>x.trim())}
+async function xlate(text,t){const tl=t==="zh"?"zh-CN":"en",j0=t==="zh"?"":" ";
+if(trE==="cr"){if(!("Translator" in self))throw{code:"nocr"};const o={sourceLanguage:"ja",targetLanguage:t==="zh"?"zh":"en"};if((await Translator.availability(o))==="unavailable")throw{code:"nocr"};const tr=await Translator.create(o);return await tr.translate(text)}
+if(trE==="gg"){if(!gKey)throw{code:"nokey"};const r=await fetch("https://translation.googleapis.com/language/translate/v2?key="+encodeURIComponent(gKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:chunks(text,1500),source:"ja",target:tl,format:"text"})});if(!r.ok)throw{code:"http",status:r.status};const j=await r.json();return j.data.translations.map(x=>x.translatedText).join(j0)}
+const out=[];for(const c of chunks(text,140)){const r=await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(c)+"&langpair=ja|"+tl);if(!r.ok)throw{code:"http",status:r.status};const j=await r.json();const s=(j.responseData&&j.responseData.translatedText)||"";if(+j.responseStatus!==200||/MYMEMORY WARNING/i.test(s))throw{code:"quota"};out.push(s)}return out.join(j0)}
+async function lgRun(){const q=trL.trim();if(!q)return;const t=trT;lgS={st:"load"};render();
+try{const tx=await xlate(q,t);lgS={st:"done",t,o:{translation:tx,pinyin:""}}}
+catch(e){const c=e&&e.code;lgS={st:"err",msg:c==="nokey"?"Google翻訳APIキーを入力してください。":c==="nocr"?"このブラウザではChrome内蔵翻訳を使えません。PC版Chromeで開くか、別のエンジンを選んでください。":c==="quota"?"無料枠の上限に達しました。時間をおくか、別のエンジンを選んでください。":c==="http"?"翻訳サービスがエラーを返しました（"+e.status+"）。キーの設定やAPIの有効化を確認してください。":navigator.onLine===false?"オフラインです。ネットに接続するか、フレーズ検索を使ってください。":"翻訳に失敗しました。通信状況を確認してもう一度お試しください。"}}
+render()}
+const ENG=[["mm","無料（MyMemory）","cloud"],["gg","Google翻訳API","key-round"],["cr","Chrome内蔵","cpu"]];
+const ED={mm:"キー不要で使えます。1日あたりの無料枠があり、訳の品質は標準的です。",gg:"自分のAPIキーで高品質に翻訳します。キーはこの端末のブラウザにだけ保存されます。",cr:"端末内で翻訳するため、モデルのダウンロード後はオフラインでも使えます。PC版のChromeで利用できます。"};
+function engUi(){return `<div class="chips" role="group" aria-label="翻訳エンジン">${ENG.map(e=>`<button class="chip" data-eng="${e[0]}" aria-pressed="${trE===e[0]}"><i data-lucide="${e[2]}"></i>${e[1]}</button>`).join("")}</div><p class="ja" style="margin:0 0 12px">${ED[trE]}</p>${trE==="gg"?`<div class="card" style="margin-bottom:12px"><label for="gkey" class="stat" style="margin:0 0 8px">Google Cloud Translation APIキー</label><input id="gkey" type="password" class="inp" autocomplete="off" value="${esc(gKey).replace(/"/g,"&quot;")}"></div>`:""}`}
+function lgRes(){const s=lgS;
+if(!s)return `<div class="note"><i data-lucide="lightbulb"></i><div>日本語の文章を入力して「翻訳する」を押してください。メールの文面や説明文のような長い文章にも使えます。ネット接続が必要です。</div></div>`;
+if(s.st==="load")return `<div class="note"><i data-lucide="loader"></i><div>翻訳しています…</div></div>`;
+if(s.st==="err")return `<div class="note"><i data-lucide="info"></i><div>${esc(s.msg)}</div></div>`;
+const zh=s.t==="zh",tx=s.o.translation||"";L["g0"]=[String(tx),zh?"zh-CN":"en-US"];
+return `<article class="card"><div class="main long ${zh?"zh":"en"} pre">${esc(tx)}</div>${zh&&s.o.pinyin?`<div class="py pre">${esc(s.o.pinyin)}</div>`:""}<div class="acts" style="margin-top:12px"><button class="ib" data-sp="g0" aria-label="音声を再生"><i data-lucide="volume-2"></i></button><button class="ib" data-cp="g0" aria-label="コピー"><i data-lucide="copy"></i></button></div></article>`}
+function modeChips(){return `<div class="chips" role="group">${[["off","wifi-off","フレーズ検索（オフライン）"],["on","wifi","長文翻訳（オンライン）"]].map(m=>`<button class="chip" data-tm="${m[0]}" aria-pressed="${trM===m[0]}"><i data-lucide="${m[1]}"></i>${m[2]}</button>`).join("")}</div>`}
+function viewLg(){return `<div class="chips" role="group">${[["zh","中国語"],["en","英語"]].map(t=>`<button class="chip" data-tt="${t[0]}" aria-pressed="${trT===t[0]}"><i data-lucide="${t[0]==="zh"?"languages":"globe"}"></i>日本語から${t[1]}へ</button>`).join("")}</div>${engUi()}<div class="card"><label for="lgin" class="stat" style="margin:0 0 8px">日本語の文章を入力（2000文字まで）</label><textarea id="lgin" class="inp" rows="6" maxlength="2000" placeholder="例: 明日の会議は10時からです。資料は事前にメールでお送りします。">${esc(trL)}</textarea><button class="btn" data-act="lgrun" ${lgS&&lgS.st==="load"?"disabled":""}><i data-lucide="send"></i>翻訳する</button></div><div style="margin-top:12px">${lgRes()}</div>`}
+function viewTr(){return modeChips()+(trM==="on"?viewLg():viewOff())}
+function viewOff(){return `<div class="chips" role="group">${[["zh","中国語"],["en","英語"]].map(t=>`<button class="chip" data-tt="${t[0]}" aria-pressed="${trT===t[0]}"><i data-lucide="${t[0]==="zh"?"languages":"globe"}"></i>日本語から${t[1]}へ</button>`).join("")}</div><div class="card"><label for="trin" class="stat" style="margin:0 0 8px">日本語を入力</label><input id="trin" class="inp" value="${trQ.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="例: トイレはどこですか" autocomplete="off"></div><div class="chips" style="padding-top:12px">${EX.map(e=>`<button class="chip" data-ex="${e}">${e}</button>`).join("")}</div><div id="res"></div>`}
+function viewMn(){return `<div class="grid">${MN.map(m=>`<article class="card mn"><div class="ic"><i data-lucide="${m[0]}"></i></div><h3>${m[1]}</h3><p>${m[2]}</p><div class="tip">${m[3]}</div></article>`).join("")}</div><div class="note"><i data-lucide="info"></i><div>ビザの要否、ネット接続、決済手段などの制度やサービスは変わることがあります。出発の前に、外務省や大使館、利用する航空会社の最新情報を確認してください。</div></div>`}
+const shuffle=a=>a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+function newQuiz(){quiz={qs:shuffle(items).slice(0,10),n:0,score:0,ans:null}}
+function optHtml(it,cls){const t=it.k==="zh"?`${it.zh}<small>${it.py}</small>`:it.en;return t}
+function viewQz(){if(!quiz)newQuiz();
+if(quiz.n>=quiz.qs.length){return `<div class="card q" style="text-align:center"><h2>結果</h2><div class="score">${quiz.score} / ${quiz.qs.length}</div><p>${quiz.score>=8?"とても良い出来です。":quiz.score>=5?"あと少しです。間違えたフレーズを復習しましょう。":"各タブで音声を聞いて、もう一度挑戦しましょう。"}</p><button class="btn" data-act="retry"><i data-lucide="rotate-ccw"></i>もう一度</button></div>`}
+const q=quiz.qs[quiz.n];if(!q.o)q.o=shuffle([q,...shuffle(items.filter(i=>i.k===q.k&&i.id!==q.id)).slice(0,3)]);
+return `<div class="stat"><span>問題 ${quiz.n+1} / ${quiz.qs.length}</span><span>正解 ${quiz.score}</span></div><div class="card q"><h2>この意味のフレーズはどれですか</h2><div class="qt">${q.ja}</div><div class="opts">${q.o.map(o=>{let c="opt";if(quiz.ans){if(o.id===q.id)c+=" right";else if(o.id===quiz.ans)c+=" wrong"}return `<button class="${c}" data-ans="${o.id}" ${quiz.ans?"disabled":""}>${optHtml(o)}</button>`}).join("")}</div>${quiz.ans?`<button class="btn" data-act="next"><i data-lucide="${quiz.n+1>=quiz.qs.length?"flag":"arrow-right"}"></i>${quiz.n+1>=quiz.qs.length?"結果を見る":"次の問題"}</button>`:""}</div>`}
+function stats(){const d=Math.ceil((new Date(2026,10,17)-new Date())/864e5);$("#cd").textContent=d>0?`出発まであと ${d} 日`:d===0?"出発日です":"出張中";const n=items.filter(i=>store[i.id]).length;$("#pb").style.width=(n/items.length*100)+"%";$("#pl").textContent=`全${items.length}フレーズ中 ${n} 個を覚えました`}
+function render(){$("#nav").innerHTML=TABS.map(t=>`<button role="tab" data-tab="${t[0]}" aria-selected="${tab===t[0]}"><i data-lucide="${t[1]}"></i>${t[2]}</button>`).join("");
+$("#app").innerHTML=tab==="mn"?viewMn():tab==="qz"?viewQz():tab==="tr"?viewTr():viewLang(tab);stats();if(tab==="tr")showRes();if(window.lucide)lucide.createIcons()}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+if(d.tab){tab=d.tab;window.scrollTo(0,0)}
+else if(d.tm)trM=d.tm;
+else if(d.eng){trE=d.eng;try{localStorage.setItem("tripEng",trE)}catch(x){}}
+else if(d.cp){try{navigator.clipboard.writeText(L[d.cp][0]).catch(()=>{})}catch(e){}return}
+else if(d.act==="lgrun"){lgRun();return}
+else if(d.tt)trT=d.tt;
+else if(d.ex)trQ=d.ex;
+else if(d.cat)cat[tab]=d.cat;
+else if(d.sp){speak(d.sp);return}
+else if(d.lr){store[d.lr]=!store[d.lr];save()}
+else if(d.ans){const q=quiz.qs[quiz.n];quiz.ans=d.ans;if(d.ans===q.id)quiz.score++;speak(q.id)}
+else if(d.act==="next"){quiz.n++;quiz.ans=null}
+else if(d.act==="retry")newQuiz();
+else return;render()});
+document.addEventListener("input",e=>{if(e.target.id==="trin"){trQ=e.target.value;showRes()}else if(e.target.id==="lgin")trL=e.target.value;else if(e.target.id==="gkey"){gKey=e.target.value.trim();try{localStorage.setItem("tripGKey",gKey)}catch(x){}}});
+render();
+</script>
+</body>
+</html>
