@@ -22,7 +22,6 @@ button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
 header{padding:20px 0 12px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 h1{font-size:1.25rem;margin:0;display:flex;align-items:center;gap:8px}
-.count{display:flex;align-items:center;gap:8px;background:var(--soft);border-radius:999px;padding:6px 14px;font-size:.875rem;font-weight:500}
 .prog{margin-top:12px;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
 .prog>i{display:block;height:100%;background:var(--pri);width:0;transition:width .3s}
 .proglabel{font-size:.8125rem;color:var(--sub);margin-top:6px}
@@ -61,7 +60,7 @@ nav button[aria-selected="true"]{background:var(--soft);color:var(--ink);font-we
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--pri);color:var(--pri-ink);border:0;border-radius:12px;padding:12px 20px;font-weight:700;min-height:48px;margin-top:14px}
 .score{font-size:2.25rem;font-weight:700}
 .stat{display:flex;justify-content:space-between;font-size:.875rem;color:var(--sub);margin-bottom:12px}
-h1 svg,.count svg,.note svg,.chip svg,nav button svg{color:var(--pri)}
+h1 svg,.note svg,.chip svg,nav button svg{color:var(--pri)}
 .chip[aria-pressed="true"] svg{color:var(--pri-ink)}
 .inp{width:100%;font:inherit;font-size:1.0625rem;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);min-height:48px}
 .inp:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
@@ -87,7 +86,6 @@ textarea.inp{resize:vertical;line-height:1.6}
  <header>
   <div class="top">
    <h1><i data-lucide="compass"></i>中国出張対策アプリ</h1>
-   <div class="count"><i data-lucide="plane-takeoff"></i><span id="cd"></span></div>
   </div>
   <div class="prog"><i id="pb"></i></div>
   <div class="proglabel" id="pl"></div>
@@ -147,19 +145,14 @@ el.innerHTML=(hits.length?`<div class="grid">${hits.map((p,i)=>tcard(p,"r"+i,p[0
 if(window.lucide)lucide.createIcons()}
 let trM="off",trL="",lgS=null;
 const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-let trE="mm",gKey="";try{gKey=localStorage.getItem("tripGKey")||"";trE=localStorage.getItem("tripEng")||"mm"}catch(e){}
 function chunks(t,n){const out=[];let cur="";t.split(/(?<=[。！？!?\n])/).forEach(s=>{while(s.length>n){if(cur){out.push(cur);cur=""}out.push(s.slice(0,n));s=s.slice(n)}if((cur+s).length>n){out.push(cur);cur=s}else cur+=s});if(cur)out.push(cur);return out.filter(x=>x.trim())}
-async function xlate(text,t){const tl=t==="zh"?"zh-CN":"en",j0=t==="zh"?"":" ";
-if(trE==="cr"){if(!("Translator" in self))throw{code:"nocr"};const o={sourceLanguage:"ja",targetLanguage:t==="zh"?"zh":"en"};if((await Translator.availability(o))==="unavailable")throw{code:"nocr"};const tr=await Translator.create(o);return await tr.translate(text)}
-if(trE==="gg"){if(!gKey)throw{code:"nokey"};const r=await fetch("https://translation.googleapis.com/language/translate/v2?key="+encodeURIComponent(gKey),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q:chunks(text,1500),source:"ja",target:tl,format:"text"})});if(!r.ok)throw{code:"http",status:r.status};const j=await r.json();return j.data.translations.map(x=>x.translatedText).join(j0)}
-const out=[];for(const c of chunks(text,140)){const r=await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(c)+"&langpair=ja|"+tl);if(!r.ok)throw{code:"http",status:r.status};const j=await r.json();const s=(j.responseData&&j.responseData.translatedText)||"";if(+j.responseStatus!==200||/MYMEMORY WARNING/i.test(s))throw{code:"quota"};out.push(s)}return out.join(j0)}
+async function xlate(text,t){const tl=t==="zh"?"zh-CN":"en",out=[];
+for(const c of chunks(text,140)){const r=await fetch("https://api.mymemory.translated.net/get?q="+encodeURIComponent(c)+"&langpair=ja|"+tl);if(!r.ok)throw{code:"http",status:r.status};const j=await r.json();const x=(j.responseData&&j.responseData.translatedText)||"";if(+j.responseStatus!==200||/MYMEMORY WARNING/i.test(x))throw{code:"quota"};out.push(x)}
+return out.join(t==="zh"?"":" ")}
 async function lgRun(){const q=trL.trim();if(!q)return;const t=trT;lgS={st:"load"};render();
 try{const tx=await xlate(q,t);lgS={st:"done",t,o:{translation:tx,pinyin:""}}}
-catch(e){const c=e&&e.code;lgS={st:"err",msg:c==="nokey"?"Google翻訳APIキーを入力してください。":c==="nocr"?"このブラウザではChrome内蔵翻訳を使えません。PC版Chromeで開くか、別のエンジンを選んでください。":c==="quota"?"無料枠の上限に達しました。時間をおくか、別のエンジンを選んでください。":c==="http"?"翻訳サービスがエラーを返しました（"+e.status+"）。キーの設定やAPIの有効化を確認してください。":navigator.onLine===false?"オフラインです。ネットに接続するか、フレーズ検索を使ってください。":"翻訳に失敗しました。通信状況を確認してもう一度お試しください。"}}
+catch(e){const c=e&&e.code;lgS={st:"err",msg:c==="quota"?"無料枠の上限に達しました。時間をおいてからお試しください。フレーズ検索は引き続き使えます。":c==="http"?"翻訳サービスがエラーを返しました（"+e.status+"）。時間をおいてお試しください。":navigator.onLine===false?"オフラインです。ネットに接続するか、フレーズ検索を使ってください。":"翻訳に失敗しました。通信状況を確認してもう一度お試しください。"}}
 render()}
-const ENG=[["mm","無料（MyMemory）","cloud"],["gg","Google翻訳API","key-round"],["cr","Chrome内蔵","cpu"]];
-const ED={mm:"キー不要で使えます。1日あたりの無料枠があり、訳の品質は標準的です。",gg:"自分のAPIキーで高品質に翻訳します。キーはこの端末のブラウザにだけ保存されます。",cr:"端末内で翻訳するため、モデルのダウンロード後はオフラインでも使えます。PC版のChromeで利用できます。"};
-function engUi(){return `<div class="chips" role="group" aria-label="翻訳エンジン">${ENG.map(e=>`<button class="chip" data-eng="${e[0]}" aria-pressed="${trE===e[0]}"><i data-lucide="${e[2]}"></i>${e[1]}</button>`).join("")}</div><p class="ja" style="margin:0 0 12px">${ED[trE]}</p>${trE==="gg"?`<div class="card" style="margin-bottom:12px"><label for="gkey" class="stat" style="margin:0 0 8px">Google Cloud Translation APIキー</label><input id="gkey" type="password" class="inp" autocomplete="off" value="${esc(gKey).replace(/"/g,"&quot;")}"></div>`:""}`}
 function lgRes(){const s=lgS;
 if(!s)return `<div class="note"><i data-lucide="lightbulb"></i><div>日本語の文章を入力して「翻訳する」を押してください。メールの文面や説明文のような長い文章にも使えます。ネット接続が必要です。</div></div>`;
 if(s.st==="load")return `<div class="note"><i data-lucide="loader"></i><div>翻訳しています…</div></div>`;
@@ -167,7 +160,7 @@ if(s.st==="err")return `<div class="note"><i data-lucide="info"></i><div>${esc(s
 const zh=s.t==="zh",tx=s.o.translation||"";L["g0"]=[String(tx),zh?"zh-CN":"en-US"];
 return `<article class="card"><div class="main long ${zh?"zh":"en"} pre">${esc(tx)}</div>${zh&&s.o.pinyin?`<div class="py pre">${esc(s.o.pinyin)}</div>`:""}<div class="acts" style="margin-top:12px"><button class="ib" data-sp="g0" aria-label="音声を再生"><i data-lucide="volume-2"></i></button><button class="ib" data-cp="g0" aria-label="コピー"><i data-lucide="copy"></i></button></div></article>`}
 function modeChips(){return `<div class="chips" role="group">${[["off","wifi-off","フレーズ検索（オフライン）"],["on","wifi","長文翻訳（オンライン）"]].map(m=>`<button class="chip" data-tm="${m[0]}" aria-pressed="${trM===m[0]}"><i data-lucide="${m[1]}"></i>${m[2]}</button>`).join("")}</div>`}
-function viewLg(){return `<div class="chips" role="group">${[["zh","中国語"],["en","英語"]].map(t=>`<button class="chip" data-tt="${t[0]}" aria-pressed="${trT===t[0]}"><i data-lucide="${t[0]==="zh"?"languages":"globe"}"></i>日本語から${t[1]}へ</button>`).join("")}</div>${engUi()}<div class="card"><label for="lgin" class="stat" style="margin:0 0 8px">日本語の文章を入力（2000文字まで）</label><textarea id="lgin" class="inp" rows="6" maxlength="2000" placeholder="例: 明日の会議は10時からです。資料は事前にメールでお送りします。">${esc(trL)}</textarea><button class="btn" data-act="lgrun" ${lgS&&lgS.st==="load"?"disabled":""}><i data-lucide="send"></i>翻訳する</button></div><div style="margin-top:12px">${lgRes()}</div>`}
+function viewLg(){return `<div class="chips" role="group">${[["zh","中国語"],["en","英語"]].map(t=>`<button class="chip" data-tt="${t[0]}" aria-pressed="${trT===t[0]}"><i data-lucide="${t[0]==="zh"?"languages":"globe"}"></i>日本語から${t[1]}へ</button>`).join("")}</div><p class="ja" style="margin:0 0 12px">無料の翻訳サービス（MyMemory）を使います。1日あたりの無料枠があります。</p><div class="card"><label for="lgin" class="stat" style="margin:0 0 8px">日本語の文章を入力（2000文字まで）</label><textarea id="lgin" class="inp" rows="6" maxlength="2000" placeholder="例: 明日の会議は10時からです。資料は事前にメールでお送りします。">${esc(trL)}</textarea><button class="btn" data-act="lgrun" ${lgS&&lgS.st==="load"?"disabled":""}><i data-lucide="send"></i>翻訳する</button></div><div style="margin-top:12px">${lgRes()}</div>`}
 function viewTr(){return modeChips()+(trM==="on"?viewLg():viewOff())}
 function viewOff(){return `<div class="chips" role="group">${[["zh","中国語"],["en","英語"]].map(t=>`<button class="chip" data-tt="${t[0]}" aria-pressed="${trT===t[0]}"><i data-lucide="${t[0]==="zh"?"languages":"globe"}"></i>日本語から${t[1]}へ</button>`).join("")}</div><div class="card"><label for="trin" class="stat" style="margin:0 0 8px">日本語を入力</label><input id="trin" class="inp" value="${trQ.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="例: トイレはどこですか" autocomplete="off"></div><div class="chips" style="padding-top:12px">${EX.map(e=>`<button class="chip" data-ex="${e}">${e}</button>`).join("")}</div><div id="res"></div>`}
 function viewMn(){return `<div class="grid">${MN.map(m=>`<article class="card mn"><div class="ic"><i data-lucide="${m[0]}"></i></div><h3>${m[1]}</h3><p>${m[2]}</p><div class="tip">${m[3]}</div></article>`).join("")}</div><div class="note"><i data-lucide="info"></i><div>ビザの要否、ネット接続、決済手段などの制度やサービスは変わることがあります。出発の前に、外務省や大使館、利用する航空会社の最新情報を確認してください。</div></div>`}
@@ -178,13 +171,12 @@ function viewQz(){if(!quiz)newQuiz();
 if(quiz.n>=quiz.qs.length){return `<div class="card q" style="text-align:center"><h2>結果</h2><div class="score">${quiz.score} / ${quiz.qs.length}</div><p>${quiz.score>=8?"とても良い出来です。":quiz.score>=5?"あと少しです。間違えたフレーズを復習しましょう。":"各タブで音声を聞いて、もう一度挑戦しましょう。"}</p><button class="btn" data-act="retry"><i data-lucide="rotate-ccw"></i>もう一度</button></div>`}
 const q=quiz.qs[quiz.n];if(!q.o)q.o=shuffle([q,...shuffle(items.filter(i=>i.k===q.k&&i.id!==q.id)).slice(0,3)]);
 return `<div class="stat"><span>問題 ${quiz.n+1} / ${quiz.qs.length}</span><span>正解 ${quiz.score}</span></div><div class="card q"><h2>この意味のフレーズはどれですか</h2><div class="qt">${q.ja}</div><div class="opts">${q.o.map(o=>{let c="opt";if(quiz.ans){if(o.id===q.id)c+=" right";else if(o.id===quiz.ans)c+=" wrong"}return `<button class="${c}" data-ans="${o.id}" ${quiz.ans?"disabled":""}>${optHtml(o)}</button>`}).join("")}</div>${quiz.ans?`<button class="btn" data-act="next"><i data-lucide="${quiz.n+1>=quiz.qs.length?"flag":"arrow-right"}"></i>${quiz.n+1>=quiz.qs.length?"結果を見る":"次の問題"}</button>`:""}</div>`}
-function stats(){const d=Math.ceil((new Date(2026,10,17)-new Date())/864e5);$("#cd").textContent=d>0?`出発まであと ${d} 日`:d===0?"出発日です":"出張中";const n=items.filter(i=>store[i.id]).length;$("#pb").style.width=(n/items.length*100)+"%";$("#pl").textContent=`全${items.length}フレーズ中 ${n} 個を覚えました`}
+function stats(){const n=items.filter(i=>store[i.id]).length;$("#pb").style.width=(n/items.length*100)+"%";$("#pl").textContent=`全${items.length}フレーズ中 ${n} 個を覚えました`}
 function render(){$("#nav").innerHTML=TABS.map(t=>`<button role="tab" data-tab="${t[0]}" aria-selected="${tab===t[0]}"><i data-lucide="${t[1]}"></i>${t[2]}</button>`).join("");
 $("#app").innerHTML=tab==="mn"?viewMn():tab==="qz"?viewQz():tab==="tr"?viewTr():viewLang(tab);stats();if(tab==="tr")showRes();if(window.lucide)lucide.createIcons()}
 document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
 if(d.tab){tab=d.tab;window.scrollTo(0,0)}
 else if(d.tm)trM=d.tm;
-else if(d.eng){trE=d.eng;try{localStorage.setItem("tripEng",trE)}catch(x){}}
 else if(d.cp){try{navigator.clipboard.writeText(L[d.cp][0]).catch(()=>{})}catch(e){}return}
 else if(d.act==="lgrun"){lgRun();return}
 else if(d.tt)trT=d.tt;
@@ -196,7 +188,7 @@ else if(d.ans){const q=quiz.qs[quiz.n];quiz.ans=d.ans;if(d.ans===q.id)quiz.score
 else if(d.act==="next"){quiz.n++;quiz.ans=null}
 else if(d.act==="retry")newQuiz();
 else return;render()});
-document.addEventListener("input",e=>{if(e.target.id==="trin"){trQ=e.target.value;showRes()}else if(e.target.id==="lgin")trL=e.target.value;else if(e.target.id==="gkey"){gKey=e.target.value.trim();try{localStorage.setItem("tripGKey",gKey)}catch(x){}}});
+document.addEventListener("input",e=>{if(e.target.id==="trin"){trQ=e.target.value;showRes()}else if(e.target.id==="lgin")trL=e.target.value;});
 render();
 </script>
 </body>
